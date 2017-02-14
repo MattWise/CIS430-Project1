@@ -1,3 +1,5 @@
+from __future__ import division,print_function
+
 import cv2
 import numpy as np
 import argparse
@@ -45,6 +47,16 @@ def process_image(img_path, size, size_pixel, number_bins, output_path=None):
     if output_path is not None:
         cv2.imwrite(output_path,img)
     return img
+
+def box_image(img,block_size=16):
+    #Need to trim image for splitting, then cut
+    img = img[:img.shape[0] // block_size * block_size, :img.shape[1] // block_size * block_size]
+    for slice in np.hsplit(img,img.shape[0]/16):
+        for dice in np.vsplit(slice,img.shape[1]/16):
+            yield dice
+
+def make_row(dice):
+
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Resize and bin images for use with association rule data mining")
