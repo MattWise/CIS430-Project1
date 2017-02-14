@@ -3,6 +3,7 @@ from __future__ import division,print_function
 import cv2
 import numpy as np
 import argparse
+import itertools as it
 
 NUMBER_BINS=2 #Number of bins each
 SIZE_PIXEL=.1 #Real size of one pixel, in square centimeters
@@ -56,7 +57,20 @@ def box_image(img,block_size=16):
             yield dice
 
 def make_row(dice):
+    ls=[]
+    for i,j in it.product(range(dice.shape[0]),repeat=2):
+        ls.append(dice[i,j])
+    ls=map(str,ls)
+    return ','.join(ls)+'\n'
 
+def make_basket(img_path, size, size_pixel, number_bins, output_file, image_output_path=None, block_size=16):
+    img=process_image(img_path,size,size_pixel,number_bins,image_output_path)
+    with open(output_file,'w') as f:
+        map(f.write,map(make_row,box_image(img,block_size)))
+
+
+def string_to_array(s):
+    np.array(eval(s.replace(' ', ',')), dtype=np.uint8)
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Resize and bin images for use with association rule data mining")
