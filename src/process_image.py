@@ -58,11 +58,10 @@ def box_image(img,block_size=16):
             yield dice
 
 def make_row(dice):
-    ls=[]
+    cache=set()
     for i,j in it.product(range(dice.shape[0]),repeat=2):
-        ls.append(dice[i,j])
-    ls=map(str,ls)
-    return ','.join(ls)+'\n'
+        cache.add(str(dice[i,j]))
+    return ','.join(list(cache))+'\n'
 
 def make_basket(img_path, size, size_pixel, number_bins, output_file, image_output_path=None, block_size=16):
     img=process_image(img_path,size,size_pixel,number_bins,image_output_path)
