@@ -26,6 +26,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     for image in args.images:
+        print("Processing {}".format(image))
         process_image.make_basket(img_path=image,
                                   size=extract_size(image),
                                   size_pixel=args.size_pixel,
