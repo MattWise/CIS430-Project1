@@ -1,3 +1,4 @@
+# coding=utf-8
 from __future__ import division,print_function
 
 import cv2
@@ -6,7 +7,7 @@ import argparse
 import itertools as it
 
 NUMBER_BINS=4 #Number of bins each
-SIZE_PIXEL=1 #Real size of one pixel, in square centimeters
+SIZE_PIXEL=0.1 #Real size of one pixel, in square centimeters
 
 class Binner(object):
     def __init__(self,number_bins):
@@ -52,8 +53,8 @@ def process_image(img_path, size, size_pixel, number_bins, output_path=None):
 def box_image(img,block_size=16):
     #Need to trim image for splitting, then cut
     img = img[:img.shape[0] // block_size * block_size, :img.shape[1] // block_size * block_size]
-    for slice in np.hsplit(img,img.shape[0]/16):
-        for dice in np.vsplit(slice,img.shape[1]/16):
+    for slice in np.hsplit(img,img.shape[1]/16):
+        for dice in np.vsplit(slice,img.shape[0]/16):
             yield dice
 
 def make_row(dice):

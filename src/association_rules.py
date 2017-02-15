@@ -3,10 +3,10 @@ import argparse
 
 def get_rules(basket_path, support=0.1, confidence=None):
     data = Orange.data.Table(basket_path)
-    kwargs={'support':support}
     if confidence is None:
-        kwargs['confidence']=confidence
-    return Orange.associate.AssociationRulesSparseInducer(data, **kwargs)
+        return Orange.associate.AssociationRulesSparseInducer(data, support=support)
+    else:
+        return Orange.associate.AssociationRulesSparseInducer(data, support=support,confidence=confidence)
 
 def print_rules(rules):
     Orange.associate.sort(rules,ms=['confidence'])
