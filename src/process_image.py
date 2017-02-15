@@ -5,8 +5,8 @@ import numpy as np
 import argparse
 import itertools as it
 
-NUMBER_BINS=2 #Number of bins each
-SIZE_PIXEL=.1 #Real size of one pixel, in square centimeters
+NUMBER_BINS=4 #Number of bins each
+SIZE_PIXEL=1 #Real size of one pixel, in square centimeters
 
 class Binner(object):
     def __init__(self,number_bins):
