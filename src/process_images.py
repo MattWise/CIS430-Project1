@@ -16,26 +16,19 @@ def generate_output_name(path):
     return os.path.splitext(path)[0]+'.basket'
 
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser(
-    #     description="Create .basket files from images for use with association rule data mining in Orange.")
-    # parser.add_argument("images", type=str, nargs='+', help="Images to process")
-    # parser.add_argument("-s", "--size-pixel", type=float, dest="size_pixel", default=process_image.SIZE_PIXEL,
-    #                     help="The desired size of a single pixel in square centimeters")
-    # parser.add_argument("-n", "--number-bins", type=int, dest="number_bins", default=process_image.NUMBER_BINS,
-    #                     help="The desired number of bins per color")
-    # args = parser.parse_args()
-    #
-    # for image in args.images:
-    #     process_image.make_basket(img_path=image,
-    #                               size=extract_size(image),
-    #                               size_pixel=args.size_pixel,
-    #                               number_bins=args.number_bins,
-    #                               output_file=generate_output_name(image),
-    #                               block_size=16)
-    image=u'/home/mwise/Documents/School/CIS430/Project1/data/Images/Joan Massanet/Joan Massanet - Composicion surrealista (Surrealist Composition) - 45x50cm.jpg'
-    process_image.make_basket(img_path=image,
-                              size=extract_size(image),
-                              size_pixel=process_image.SIZE_PIXEL,
-                              number_bins=process_image.NUMBER_BINS,
-                              output_file=generate_output_name(image),
-                              block_size=16)
+    parser = argparse.ArgumentParser(
+        description="Create .basket files from images for use with association rule data mining in Orange.")
+    parser.add_argument("images", type=str, nargs='+', help="Images to process")
+    parser.add_argument("-s", "--size-pixel", type=float, dest="size_pixel", default=process_image.SIZE_PIXEL,
+                        help="The desired size of a single pixel in square centimeters")
+    parser.add_argument("-n", "--number-bins", type=int, dest="number_bins", default=process_image.NUMBER_BINS,
+                        help="The desired number of bins per color")
+    args = parser.parse_args()
+
+    for image in args.images:
+        process_image.make_basket(img_path=image,
+                                  size=extract_size(image),
+                                  size_pixel=args.size_pixel,
+                                  number_bins=args.number_bins,
+                                  output_file=generate_output_name(image),
+                                  block_size=16)
