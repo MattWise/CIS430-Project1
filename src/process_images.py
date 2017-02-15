@@ -3,9 +3,12 @@ import argparse
 import re
 import process_image
 
-size_re = re.compile(r'([0-9.]+)x([0-9.])+cm')
+size_re = re.compile(r'([0-9.]+)x([0-9.]+)cm')
 def extract_size(filename):
-    width,height=map(float,size_re.match(filename).group(1,2))
+    m=size_re.search(filename)
+    if m is None:
+        print(filename)
+    width,height=map(float,m.group(1,2))
     return width,height
 
 def generate_output_name(path):
