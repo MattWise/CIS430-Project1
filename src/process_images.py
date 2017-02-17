@@ -25,8 +25,8 @@ if __name__ == '__main__':
                         help="The desired number of bins per color")
     args = parser.parse_args()
 
-    for image in args.images:
-        print("Processing {}".format(image))
+    for index,image in enumerate(args.images):
+        print("Processing image {}/{}: {}".format(index,len(args.images),image))
         process_image.make_basket(img_path=image,
                                   size=extract_size(image),
                                   size_pixel=args.size_pixel,
