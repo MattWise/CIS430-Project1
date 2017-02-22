@@ -1,19 +1,8 @@
 # coding=utf-8
-import os
 import argparse
-import re
+
 import process_image
-
-size_re = re.compile(r'([0-9.]+)x([0-9.]+)cm')
-def extract_size(filename):
-    m=size_re.search(filename)
-    if m is None:
-        print(filename)
-    width,height=map(float,m.group(1,2))
-    return width,height
-
-def generate_output_name(path):
-    return os.path.splitext(path)[0]+'.basket'
+from utilities import extract_size, generate_output_name
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(

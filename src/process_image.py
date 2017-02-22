@@ -5,6 +5,9 @@ import cv2
 import numpy as np
 import argparse
 import itertools as it
+import os
+
+from utilities import generate_output_name
 
 NUMBER_BINS=4 #Number of bins each
 SIZE_PIXEL=0.1 #Real size of one pixel, in square centimeters
@@ -68,10 +71,6 @@ def make_basket(img_path, size, size_pixel, number_bins, output_file, image_outp
     with open(output_file,'w') as f:
         map(f.write,map(make_row,box_image(img,block_size)))
 
-
-def string_to_array(s):
-    np.array(eval(s.replace(' ', ',')), dtype=np.uint8)
-
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Resize and bin images for use with association rule data mining")
     parser.add_argument("img_path",type=str,help="Image to process")
@@ -85,6 +84,7 @@ if __name__ == '__main__':
 
     output_path=args.output
     if output_path is None:
+        output_path=generate_output_name(args.img_path,extension='_processed'+os.path.splitext(args.img_path)[1])
         output_path=args.img_path[:-4]+"_processed"+args.img_path[-4:]
 
     # if not hasattr(args,"output_path"):
