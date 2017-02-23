@@ -67,7 +67,7 @@ def save_rules_to_json(rules,output_path):
 
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Extract rules from .basket and print the results")
-    parser.add_argument("basket",type=str,help=".basket to process")
+    parser.add_argument("baskets",type=str,help=".baskets to process",nargs="+")
     parser.add_argument("-s",'--support', type=float, help="Minimum support",default=0.34)
     parser.add_argument("-o", '--output', type=str, help="Output File Path", default=None)
 
@@ -77,4 +77,5 @@ if __name__ == '__main__':
     if output_path is None:
         output_path=generate_output_name(args.basket,extension='_rules.json')
 
-    save_rules_to_json(get_rules(args.basket,support=args.support),output_path)
+    for basket in args.baskets:
+        save_rules_to_json(get_rules(basket,support=args.support),output_path)
