@@ -1,41 +1,32 @@
 
+// graph dimensions
 var svgWidth = 600;		// width of the svg element
 var svgHeight = 10000;	// height of the svg element
 
 var margin = {top:80,left:120,bottom:40,right:20};
 
-// text
-var titleText = "Graph";
-var yAxisTitleText = "Lift";
-var xAxisTitleText = "Antecedent";
-
 var chartWidth = svgWidth - margin.left - margin.right;		// bar chart width
 
-var antecedent = [];
-var consequent = [];
+// text
+var ents = ["antecedent", "consequent" ];
+var measures = ["supp", "cove", "lift", "conf", "leve"];
 
-var support = [];
-var coverage = [];
-var lift = [];
-var confidence = [];
-var leverage = [];
+var titleText = "Graph";
 
-jsonarray.forEach(function(object, index, arr){
+var yAxisValue = measures[2];
+var xAxisValue = ents[0];
 
-	antecedent.push(object["antecedent"]);
-	consequent.push(object["consequent"]);
-	
-	support.push(object["supp"]);
-	coverage.push(object["cove"]);
-	lift.push(object["lift"]);
-	confidence.push(object["conf"]);
-	leverage.push(object["leve"]);
+
+jsonarray.sort(function(object, object2){
+	return object2[yAxisValue] - object[yAxisValue];
 });
 
 
 // create a d3 scale for the y axis
 
-var results = confidence;
+var results = jsonarray.map(function(object) {
+	return object[yAxisValue];
+});
 console.log(results);
 
 var barScaler = d3.scaleLinear()
@@ -64,7 +55,7 @@ svg.append("text")
 	.attr("y", margin.top / 1.5)
 	.attr("text-anchor", "middle")
 	.attr("font-size", 16)
-	.text(yAxisTitleText);
+	.text(yAxisValue);
 	
 // create the vertical axis title
 svg.append("text")
@@ -73,7 +64,7 @@ svg.append("text")
 	.attr("y", margin.top / 1.5)
 	.attr("text-anchor", "middle")
 	.attr("font-size", 16)
-	.text(xAxisTitleText);
+	.text(xAxisValue);
 	
 // create a chart container
 var chartGroup = svg.append("g").attr("class","chart");
