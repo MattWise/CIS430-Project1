@@ -33,7 +33,7 @@ def get_rules_from_image(img_path,size_pixel=process_image.SIZE_PIXEL,number_bin
     return rules
 
 def string_to_array(s):
-    return re.sub(r'\[\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*\]',r'\[\1,\2,\3\]',s)
+    return re.sub(r'\[\s*([0-9]+)\s*([0-9]+)\s*([0-9]+)\s*\]',r'[\1,\2,\3]',s)
 
 def get_arrays(string):
     left_brackets=[i for i,x in enumerate(string) if x=="["]
