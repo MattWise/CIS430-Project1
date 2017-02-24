@@ -1,15 +1,15 @@
 
 var svgWidth = 600;		// width of the svg element
 var svgHeight = 10000;	// height of the svg element
-var chartVMargin = 80;	// both vertical margins for the bar chart
-var chartHMargin = 60;	// left horizontal margin for the bar chart
+
+var margin = {top:80,left:120,bottom:40,right:20};
 
 // text
 var titleText = "Graph";
 var yAxisTitleText = "Lift";
 var xAxisTitleText = "Antecedent";
 
-var chartWidth = svgWidth - chartHMargin;		// bar chart width
+var chartWidth = svgWidth - margin.left - margin.right;		// bar chart width
 
 var antecedent = [];
 var consequent = [];
@@ -51,27 +51,26 @@ var svg = d3.select("#graph")
 // create the chart title
 svg.append("text")
 	.attr("class","titletext")
-	.attr("x", (svgWidth + chartHMargin) / 2)
-	.attr("y", chartVMargin / 1.5)
+	.attr("x", (svgWidth + margin.left - margin.right) / 2)
+	.attr("y", margin.top / 3)
 	.attr("text-anchor", "middle")
 	.attr("font-size", 24)
 	.text(titleText);
 		
-// create the y axis title
+// create the horizontal axis title
 svg.append("text")
 	.attr("class","yaxistitle")
-	.attr("x", -svgHeight / 2)
-	.attr("y", chartHMargin / 3)
-	.attr("transform", "rotate(-90)")
+	.attr("x", (svgWidth + margin.left - margin.right) / 2)
+	.attr("y", margin.top / 1.5)
 	.attr("text-anchor", "middle")
 	.attr("font-size", 16)
 	.text(yAxisTitleText);
 	
-// create the x axis title
+// create the vertical axis title
 svg.append("text")
 	.attr("class","xaxistitle")
-	.attr("x", (svgWidth + chartHMargin) / 2)
-	.attr("y", svgHeight - chartVMargin / 8)
+	.attr("x", margin.left / 2)
+	.attr("y", margin.top / 1.5)
 	.attr("text-anchor", "middle")
 	.attr("font-size", 16)
 	.text(xAxisTitleText);
@@ -87,7 +86,7 @@ xAxisGroup.call(d3.axisTop()
 	.scale(barScaler));
 			
 // string for translating the chart
-var chartTranslate = "translate(" + chartHMargin + "," + chartVMargin + ")";
+var chartTranslate = "translate(" + margin.left + "," + margin.top + ")";
 
 // translate the bar chart
 chartGroup.attr("transform", chartTranslate);
