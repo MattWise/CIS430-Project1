@@ -50,23 +50,24 @@ var y = d3.scaleLinear()
     .rangeRound([height,0])
     .domain(d3.extent(data,yAccessor));
 jsdom.env({
-    html:"<html><body></body></html>",
+    html:"<html><body><div id='graph'></div></body></html>",
     // html:'',
     features:{ QuerySelector:true },
     done:function(errors, window){
 
 
         window.d3 = d3.select(window.document); //get d3 into the dom
+        console.log(window.d3);
 
         // var svg = window.document.createElementNS('http://www.w3.org/2000/svg', 'svg')
         // var svg = window.d3.select('body')
-        var svg = d3.select(window.document).select('body')
+        var svg = window.d3.select('#graph')
             // .append('div').attr('class','container') //make a container div to ease the saving process
             .append('svg')
                 .attr("width",true_width)
                 .attr("height",true_height)
                 // .attr("xmlns",'http://www.w3.org/2000/svg')
-        console.log(svg.width);
+        console.log(svg);
         var g = svg.append("g")
             .attr("transform","translate("+margin.left+","+margin.top+")");
 
