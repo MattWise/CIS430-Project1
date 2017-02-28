@@ -1,20 +1,59 @@
+import os
 import argparse
+import json
 
-OUTPUT_PATH=r"./output.json"
+"""
+Stitched json of form:
+
+{
+    artist: {
+        path: {
+            "supp":support,
+            "conf":confidence
+            "lift":lift,
+            "cove":coverage,
+            "leve":leverage,
+            "antecedent":antecedent,
+            "consequent":consequent
+        }
+    }
+}
+"""
+
+OUTPUT_PATH = r"./output.json"
+
+
+def get_object_from_json(json_path):
+    with open(json_path, 'r') as j:
+        return json.load(j)
+
+
+def get_artist(json):
+    return os.path.basename(os.path.dirname(json))
+
+
+def is_json(json_path):
+    return os.path.splitext(json_path)[1] == ".json"
+
+
+def stitch_jsons(jsons, output_path=OUTPUT_PATH):
+    jsons = map(os.path.abspath, jsons)
+    assert all(map(is_json, jsons))
+    new_object = {}
+    for json_path in jsons:
+        artist = get_artist(json_path)
+        if not artist in new_object:
+            new_object[artist] = {}
+        new_object[artist][os.path.basename(json_path)] = get_object_from_json(json_path)
+    with open(output_path, 'w') as j:
+        json.dump(new_object, j)
+
 
 if __name__ == '__main__':
-    parser=argparse.ArgumentParser(description="Extract rules from .basket and print the results")
-    parser.add_argument("baskets",type=str,help=".baskets to process",nargs="+")
-    parser.add_argument("-o", '--output', type=str, help="Output File Path", default=None)
+    parser = argparse.ArgumentParser(description="Stitch several *_rules.json files together into one json.")
+    parser.add_argument("jsons", type=str, help=".json files to process", nargs="+")
+    parser.add_argument("-o", '--output', type=str, help="Output File Path", default=OUTPUT_PATH)
 
-    args=parser.parse_args()
+    args = parser.parse_args()
 
-    # output_path=args.output
-    # if output_path is None:
-    #     output_path=generate_output_name(args.basket,extension='_rules.json')
-
-
-
-    for basket in args.baskets:
-        output_path = generate_output_name(basket, extension='_rules.json')
-        save_rules_to_json(get_rules(basket,support=args.support),output_path)
+    stitch_jsons(args.jsons, output_path=args.output)

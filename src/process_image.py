@@ -9,7 +9,7 @@ import os
 
 from utilities import generate_output_name
 
-NUMBER_BINS=4 #Number of bins each
+NUMBER_BINS=5 #Number of bins each
 SIZE_PIXEL=0.1 #Real size of one pixel, in square centimeters
 
 class Binner(object):

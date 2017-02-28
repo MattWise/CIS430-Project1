@@ -1,12 +1,11 @@
 import Orange
 import argparse
-import numpy as np
 import json
 import os
 import re
 
 import utilities
-import process_image,process_images
+import process_image
 
 def get_rules(basket_path, support=0.1, confidence=None):
     data = Orange.data.Table(basket_path)
@@ -69,7 +68,7 @@ def save_rules_to_json(rules,output_path):
 if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Extract rules from .basket and print the results")
     parser.add_argument("baskets",type=str,help=".baskets to process",nargs="+")
-    parser.add_argument("-s",'--support', type=float, help="Minimum support",default=0.34)
+    parser.add_argument("-s",'--support', type=float, help="Minimum support",default=0.1)
     #parser.add_argument("-o", '--output', type=str, help="Output File Path", default=None)
 
     args=parser.parse_args()
