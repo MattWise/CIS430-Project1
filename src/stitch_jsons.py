@@ -5,19 +5,27 @@ import json
 """
 Stitched json of form:
 
-{
-    artist: {
-        path: {
-            "supp":support,
-            "conf":confidence
-            "lift":lift,
-            "cove":coverage,
-            "leve":leverage,
-            "antecedent":antecedent,
-            "consequent":consequent
-        }
+[
+    {
+    "name":name,
+        "works":
+        [
+            {
+            "path":path
+            "rule":
+                {
+                "supp":support,
+                "conf":confidence
+                "lift":lift,
+                "cove":coverage,
+                "leve":leverage,
+                "antecedent":antecedent,
+                "consequent":consequent
+                }
+            }
+        ]
     }
-}
+]
 """
 
 OUTPUT_PATH = r"./output.json"
@@ -39,14 +47,22 @@ def is_json(json_path):
 def stitch_jsons(jsons, output_path=OUTPUT_PATH):
     jsons = map(os.path.abspath, jsons)
     assert all(map(is_json, jsons))
-    new_object = {}
-    for json_path in jsons:
-        artist = get_artist(json_path)
-        if not artist in new_object:
-            new_object[artist] = {}
-        new_object[artist][os.path.basename(json_path)] = get_object_from_json(json_path)
+
+    artists={get_artist(j):[] for j in jsons}
+    for j in jsons:
+        artists[get_artist(j)].append(j)
+
+    new_list = []
+    for artist,json_paths in artists.items():
+        works=[]
+        for json_path in json_paths:
+            work={"rules":get_object_from_json(json_path),"path":os.path.basename(json_path)}
+            rules=get_object_from_json(json_path)
+            work["path"]=os.path.basename(json_path)
+            works.append(work)
+        new_list.append({"name":artist,"works":works})
     with open(output_path, 'w') as j:
-        json.dump(new_object, j)
+        json.dump(new_list, j)
 
 
 if __name__ == '__main__':
