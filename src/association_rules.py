@@ -10,9 +10,9 @@ import process_image
 def get_rules(basket_path, support=0.3, confidence=None):
     data = Orange.data.Table(basket_path)
     if confidence is None:
-        return Orange.associate.AssociationRulesSparseInducer(data, support=support)
+        return Orange.associate.AssociationRulesSparseInducer(data, support=support,max_item_sets=1000000)
     else:
-        return Orange.associate.AssociationRulesSparseInducer(data, support=support,confidence=confidence)
+        return Orange.associate.AssociationRulesSparseInducer(data, support=support, confidence=confidence,max_item_sets=100000000)
 
 def print_rules(rules):
     Orange.associate.sort(rules,ms=['confidence'])
@@ -69,6 +69,7 @@ if __name__ == '__main__':
     parser=argparse.ArgumentParser(description="Extract rules from .basket and print the results")
     parser.add_argument("baskets",type=str,help=".baskets to process",nargs="+")
     parser.add_argument("-s",'--support', type=float, help="Minimum support",default=0.1)
+    parser.add_argument("-c", '--confidence', type=float, help="Minimum confidence", default=None)
     #parser.add_argument("-o", '--output', type=str, help="Output File Path", default=None)
 
     args=parser.parse_args()
@@ -86,6 +87,6 @@ if __name__ == '__main__':
     for basket in args.baskets:
         output_path = generate_output_name(basket, extension='_rules.txt')
         print('\n\n{}'.format(os.path.basename(output_path)))
-        print_rules(get_rules(basket,support=args.support))
+        print_rules(get_rules(basket,support=args.support,confidence=args.confidence))
 
 
