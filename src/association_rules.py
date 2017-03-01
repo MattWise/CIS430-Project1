@@ -7,7 +7,7 @@ import re
 import utilities
 import process_image
 
-def get_rules(basket_path, support=0.1, confidence=None):
+def get_rules(basket_path, support=0.3, confidence=None):
     data = Orange.data.Table(basket_path)
     if confidence is None:
         return Orange.associate.AssociationRulesSparseInducer(data, support=support)
@@ -79,6 +79,13 @@ if __name__ == '__main__':
 
 
 
+    # for basket in args.baskets:
+    #     output_path = generate_output_name(basket, extension='_rules.json')
+    #     save_rules_to_json(get_rules(basket,support=args.support),output_path)
+
     for basket in args.baskets:
-        output_path = generate_output_name(basket, extension='_rules.json')
-        save_rules_to_json(get_rules(basket,support=args.support),output_path)
+        output_path = generate_output_name(basket, extension='_rules.txt')
+        print('\n\n{}'.format(os.path.basename(output_path)))
+        print_rules(get_rules(basket,support=args.support))
+
+
